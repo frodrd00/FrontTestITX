@@ -1,0 +1,9 @@
+<div class="product-list">
+  @if (products().length > 0) { @for (product of filteredProducts(); track
+  product.id){
+  <app-product-item [product]="product"></app-product-item>
+  <br />
+  } } @else {
+  <p>No hay productos disponibles.</p>
+  }
+</div>

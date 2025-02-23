@@ -1,0 +1,7 @@
+<nav class="breadcrumbs">
+  @for (breadcrumb of breadcrumbs(); track breadcrumb.label) {
+  <a [routerLink]="breadcrumb.url">{{ breadcrumb.label }}</a>
+  @if (breadcrumb !== breadcrumbs()[breadcrumbs().length - 1]) {
+  <span>></span>
+  } }
+</nav>
