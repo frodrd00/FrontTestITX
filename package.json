@@ -1,5 +1,5 @@
 {
-  "name": "phones-store-app",
+  "name": "phone-store-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

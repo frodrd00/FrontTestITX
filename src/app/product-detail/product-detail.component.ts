@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { signal } from '@angular/core';
 import { ProductService } from '../../services/productService';
+import { currentProductName } from '../app.component';
 
 /**
  * Componente para mostrar los detalles de un producto
@@ -21,11 +22,16 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.getProductData();
+  }
+
+  getProductData() {
     const productId = this.route.snapshot.paramMap.get('id');
     if (productId) {
       this.productService.getProductById(productId).subscribe({
         next: (data) => {
           this.product.set(data);
+          currentProductName.set(data.brand + ' ' + data.model);
         },
         error: (error) =>
           console.error('Error al obtener detalles del producto:', error),
