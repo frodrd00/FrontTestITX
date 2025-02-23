@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { signal } from '@angular/core';
 import { ProductService } from '../../services/productService';
-import { currentProductName } from '../app.component';
+import { currentProductName } from '../../app.component';
+import { ProductDetail } from '../../models/productDetail';
+import { Product } from '../../models/product';
 
 /**
  * Componente para mostrar los detalles de un producto
@@ -14,7 +16,7 @@ import { currentProductName } from '../app.component';
   styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit {
-  product = signal<any | null>(null);
+  product = signal<Product | null>(null);
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +31,7 @@ export class ProductDetailComponent implements OnInit {
     const productId = this.route.snapshot.paramMap.get('id');
     if (productId) {
       this.productService.getProductById(productId).subscribe({
-        next: (data) => {
+        next: (data: ProductDetail) => {
           this.product.set(data);
           currentProductName.set(data.brand + ' ' + data.model);
         },

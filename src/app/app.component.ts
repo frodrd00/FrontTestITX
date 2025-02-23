@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './components/header/header.component';
 import { RouterOutlet } from '@angular/router';
 
 export const currentProductName = signal<string>('');

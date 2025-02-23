@@ -4,7 +4,7 @@ import { ProductDetailComponent } from './product-detail.component';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ProductService } from '../../services/productService';
-import { currentProductName } from '../app.component';
+import { currentProductName } from '../../app.component';
 
 describe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;

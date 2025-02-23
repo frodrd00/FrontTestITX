@@ -1,8 +1,9 @@
-import { Component, effect, signal } from '@angular/core';
+import { Component, effect, signal, OnInit } from '@angular/core';
 import { ProductService } from '../../services/productService';
 import { ProductItemComponent } from '../product-item/product-item.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { currentProductName } from '../app.component';
+import { currentProductName } from '../../app.component';
+import { Product } from '../../models/product';
 
 /**
  * Componente para mostrar la lista de productos
@@ -13,9 +14,9 @@ import { currentProductName } from '../app.component';
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })
-export class ProductListComponent {
-  products = signal<any[]>([]);
-  filteredProducts = signal<any[]>([]);
+export class ProductListComponent implements OnInit {
+  products = signal<Product[]>([]);
+  filteredProducts = signal<Product[]>([]);
   searchQuery = signal<string>('');
   pageIndex = 0;
   pageSize = 8;
@@ -27,8 +28,8 @@ export class ProductListComponent {
       this.filteredProducts.set(
         this.products().filter(
           (product) =>
-            product.brand.toLowerCase().includes(query) ||
-            product.model.toLowerCase().includes(query)
+            (product.brand?.toLowerCase().includes(query) ?? false) ||
+            (product.model?.toLowerCase().includes(query) ?? false)
         )
       );
     });
