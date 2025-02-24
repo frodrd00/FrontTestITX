@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProductDetailComponent } from './product-detail.component';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ProductService } from '../../services/productService';
 import { currentProductName } from '../../app.component';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { signal } from '@angular/core';
 
 describe('ProductDetailComponent', () => {

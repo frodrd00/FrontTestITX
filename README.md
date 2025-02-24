@@ -2,6 +2,12 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.8.
 
+# Notas
+
+La api de añadir al carrito siempre devuelve { count: 1 }. Se persiste el dato en local storage.
+Los datos de llamadas a la api de lisa de productos y detalle en producto se persiste en local storage.
+Ng Lint no esta pasando bien porque al ser typescrip algunos elementos son neceasrios que sean any.
+
 # Lint
 
 ```bash

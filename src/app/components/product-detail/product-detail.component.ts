@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDivider } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButtonModule } from '@angular/material/button';
+import { Count } from '../../models/count';
 
 /**
  * Componente para mostrar los detalles de un producto
@@ -80,7 +81,7 @@ export class ProductDetailComponent implements OnInit {
         storageCode: this.selectedStorage(),
       })
       .subscribe({
-        next: (data) => {
+        next: (data: Count) => {
           console.log('Producto añadido al carrito:', data);
           cartItemCount.set(data.count);
           localStorage.setItem('cartCount', data.count.toString());
