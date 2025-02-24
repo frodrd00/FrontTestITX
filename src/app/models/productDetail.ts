@@ -11,6 +11,18 @@ export interface ProductDetail {
   battery?: string;
   primaryCamera?: string[];
   secondaryCamera?: string[];
-  dimensions?: string;
+  dimentions?: string;
   weight?: string;
+  colors?: string[];
+  options?: Options;
+}
+
+export interface Option {
+  code: number;
+  name: string;
+}
+
+export interface Options {
+  colors: Option[];
+  storages: Option[];
 }

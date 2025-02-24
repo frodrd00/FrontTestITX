@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, Observable, of } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductDetail } from '../models/productDetail';
+import { CacheService } from './cacheService';
 
 /**
  * Servicio para obtener productos de la API
@@ -10,34 +11,30 @@ import { ProductDetail } from '../models/productDetail';
 @Injectable({ providedIn: 'root' })
 export class ProductService {
   private apiUrl = 'https://itx-frontend-test.onrender.com/api';
-  private cacheExpiration = 3600000;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private cacheService: CacheService) {}
 
   /**
    * Metodo para obtener todos los productos
    * @returns Un observable con la respuesta de la API
    */
   getProducts(): Observable<Product[]> {
-    // Comprobar si hay productos en cache
-    const cacheProducts = localStorage.getItem('products');
-    // si hay productos en cache y no han pasado mas de 1 hora desde la ultima peticion
-    if (cacheProducts) {
-      const cacheProductData = JSON.parse(cacheProducts);
-      if (Date.now() - cacheProductData.timestamp < this.cacheExpiration) {
-        return of(cacheProductData.data);
-      }
+    let cacheData = this.cacheService.getListPrioductsCache();
+
+    if (cacheData != null) {
+      return cacheData;
+    } else {
+      // si no hay productos en cache o han pasado mas de 1 hora
+      return this.http.get<Product[]>(this.apiUrl + '/product').pipe(
+        map((data) => {
+          localStorage.setItem(
+            'products',
+            JSON.stringify({ data, timestamp: Date.now() })
+          );
+          return data;
+        })
+      );
     }
-    // si no hay productos en cache o han pasado mas de 1 hora
-    return this.http.get<Product[]>(this.apiUrl + '/product').pipe(
-      map((data) => {
-        localStorage.setItem(
-          'products',
-          JSON.stringify({ data, timestamp: Date.now() })
-        );
-        return data;
-      })
-    );
   }
 
   /**
@@ -46,24 +43,21 @@ export class ProductService {
    * @returns Un observable con la respuesta de la API
    */
   getProductById(id: string): Observable<ProductDetail> {
-    // Comprobar si el detalle de un producto esta en cache
-    const cacheProductId = localStorage.getItem('product_' + id);
-    // si hay productos en cache y no han pasado mas de 1 hora desde la ultima peticion
-    if (cacheProductId) {
-      const cacheProductIdParse = JSON.parse(cacheProductId);
-      if (Date.now() - cacheProductIdParse.timestamp < this.cacheExpiration) {
-        return of(cacheProductIdParse.data);
-      }
+    let cacheData = this.cacheService.getProductDetailCache(id);
+
+    if (cacheData != null) {
+      return cacheData;
+    } else {
+      // si no hay productos en cache o han pasado mas de 1 hora
+      return this.http.get<ProductDetail>(this.apiUrl + '/product/' + id).pipe(
+        map((data: ProductDetail) => {
+          localStorage.setItem(
+            'product_' + id,
+            JSON.stringify({ data, timestamp: Date.now() })
+          );
+          return data;
+        })
+      );
     }
-    // si no hay productos en cache o han pasado mas de 1 hora
-    return this.http.get<ProductDetail>(this.apiUrl + '/product/' + id).pipe(
-      map((data: ProductDetail) => {
-        localStorage.setItem(
-          'product_' + id,
-          JSON.stringify({ data, timestamp: Date.now() })
-        );
-        return data;
-      })
-    );
   }
 }

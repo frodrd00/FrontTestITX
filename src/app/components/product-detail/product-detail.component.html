@@ -1,1 +1,48 @@
-<h2>{{ product()?.brand }} {{ product()?.model }}</h2>
+<div class="product-detail">
+  <div class="image-section">
+    <img
+      [src]="product()?.imgUrl"
+      alt="{{ product()?.brand }} {{ product()?.model }}"
+    />
+  </div>
+  <div class="details-section">
+    <div class="description-section">
+      <h2>{{ product()?.brand }} {{ product()?.model }}</h2>
+      <span class="price"
+        ><strong>Precio:</strong> {{ product()?.price }} €</span
+      >
+      <span><strong>CPU:</strong> {{ product()?.cpu }}</span>
+      <span><strong>RAM:</strong> {{ product()?.ram }}</span>
+      <span><strong>Sistema Operativo:</strong> {{ product()?.os }}</span>
+      <span
+        ><strong>Resolución:</strong> {{ product()?.displayResolution }}</span
+      >
+      <span><strong>Batería:</strong> {{ product()?.battery }}</span>
+      <span><strong>Cámaras:</strong> {{ product()?.primaryCamera }}</span>
+      <span><strong>Dimensiones:</strong> {{ product()?.dimentions }}</span>
+      <span><strong>Peso:</strong> {{ product()?.weight }}</span>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="actions-section">
+      <h3>Personaliza tu producto</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Color</mat-label>
+        <mat-select [(value)]="selectedColor">
+          @for (color of product()?.colors; track color) {
+          <mat-option [value]="color">{{ color }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Almacenamiento</mat-label>
+        <mat-select [(value)]="selectedStorage">
+          @for (storage of product()?.options?.storages; track storage) {
+          <mat-option [value]="storage.code">
+            {{ storage.name }}
+          </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+</div>
