@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, of, tap } from 'rxjs';
-import { Product } from '../models/product';
+import { Observable, of, tap } from 'rxjs';
+import { Product, ProductBuy } from '../models/product';
 import { ProductDetail } from '../models/productDetail';
 import { CacheService } from './cacheService';
+import { Count } from '../models/count';
 
 /**
  * Servicio para obtener productos de la API
@@ -19,7 +20,7 @@ export class ProductService {
    * @returns Un observable con la respuesta de la API
    */
   getProducts(): Observable<Product[]> {
-    let cacheData = this.cacheService.getListPrioductsCache();
+    const cacheData = this.cacheService.getListPrioductsCache();
     if (cacheData != null) {
       return of(cacheData);
     } else {
@@ -56,5 +57,14 @@ export class ProductService {
         })
       );
     }
+  }
+
+  /**
+   * Metodo para añadir un producto al carrito
+   * @param product Pruoducto a añadir al carrito
+   * @returns Un observable con la respuesta de la API
+   */
+  addToCart(product: ProductBuy): Observable<Count> {
+    return this.http.post<Count>(this.apiUrl + '/cart', product);
   }
 }

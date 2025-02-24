@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { ProductService } from '../../services/productService';
 import { currentProductName } from '../../app.component';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { signal } from '@angular/core';
 
 describe('ProductDetailComponent', () => {
   let component: ProductDetailComponent;
@@ -17,6 +20,9 @@ describe('ProductDetailComponent', () => {
       getProductById: jasmine
         .createSpy('getProductById')
         .and.returnValue(of({ brand: 'TestBrand', model: 'TestModel' })),
+      addToCart: jasmine
+        .createSpy('addToCart')
+        .and.returnValue(of({ count: 1 })),
     };
 
     activatedRouteMock = {
@@ -32,6 +38,7 @@ describe('ProductDetailComponent', () => {
       providers: [
         { provide: ProductService, useValue: productServiceMock },
         { provide: ActivatedRoute, useValue: activatedRouteMock },
+        provideAnimations(),
       ],
     }).compileComponents();
 
@@ -62,5 +69,23 @@ describe('ProductDetailComponent', () => {
       'Error al obtener detalles del producto:',
       'Error'
     );
+  });
+
+  it('debería añadir el producto al carrito', () => {
+    component.product = signal({
+      id: '123',
+      brand: 'TestBrand',
+      model: 'TestModel',
+    });
+    component.selectedColor = signal('colorCode');
+    component.selectedStorage = signal(123);
+
+    component.addToCart();
+
+    expect(productServiceMock.addToCart).toHaveBeenCalledWith({
+      id: '123',
+      colorCode: 'colorCode',
+      storageCode: 123,
+    });
   });
 });

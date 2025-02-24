@@ -44,6 +44,10 @@
       .actions-section {
         padding-top: 8px;
   
+        .add-to-cart {
+          display: flex;
+          flex-direction: row-reverse;
+        }
       }
     }
   

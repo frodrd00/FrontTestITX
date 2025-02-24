@@ -1,18 +1,18 @@
 <app-search-bar (searchEvent)="updateSearchQuery($event)"></app-search-bar>
 
 <div class="product-list">
-  @if (products().length > 0) { @for (product of
+  @if (filteredProducts().length > 0) { @for (product of
   filteredProducts().slice(pageIndex * pageSize, (pageIndex + 1) * pageSize);
   track product.id){
   <app-product-item [product]="product"></app-product-item>
   } } @else {
-  <p>No hay productos disponibles.</p>
+  <p>SE estan cargando los productos o No hay productos disponibles.</p>
   }
 </div>
 
 <!-- Paginador -->
 <mat-paginator
-  [length]="products().length"
+  [length]="filteredProducts().length"
   [pageSize]="pageSize"
   [pageSizeOptions]="[8, 16, 48, 100]"
   (page)="onPageChange($event)"

@@ -10,3 +10,9 @@ export interface CacheProduct {
   data: Product[];
   timestamp: number;
 }
+
+export interface ProductBuy {
+  id?: string;
+  colorCode?: string;
+  storageCode?: number;
+}
