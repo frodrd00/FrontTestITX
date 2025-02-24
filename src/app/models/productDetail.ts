@@ -26,3 +26,8 @@ export interface Options {
   colors: Option[];
   storages: Option[];
 }
+
+export interface CacheProductDetail {
+  data: ProductDetail;
+  timestamp: number;
+}

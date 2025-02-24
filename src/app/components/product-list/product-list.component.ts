@@ -4,13 +4,14 @@ import { ProductItemComponent } from '../product-item/product-item.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { currentProductName } from '../../app.component';
 import { Product } from '../../models/product';
+import { SearchBarComponent } from '../../search-bar/search-bar.component';
 
 /**
  * Componente para mostrar la lista de productos
  */
 @Component({
   selector: 'app-product-list',
-  imports: [ProductItemComponent, MatPaginatorModule],
+  imports: [ProductItemComponent, MatPaginatorModule, SearchBarComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
 })
@@ -60,5 +61,13 @@ export class ProductListComponent implements OnInit {
   onPageChange(event: any) {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
+  }
+
+  /**
+   * Actualizar la búsqueda de productos
+   * @param query
+   */
+  updateSearchQuery(input: string): void {
+    this.searchQuery.set(input);
   }
 }

@@ -5,3 +5,8 @@ export interface Product {
   price?: string;
   imgUrl?: string;
 }
+
+export interface CacheProduct {
+  data: Product[];
+  timestamp: number;
+}

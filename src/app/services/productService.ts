@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable, of } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 import { Product } from '../models/product';
 import { ProductDetail } from '../models/productDetail';
 import { CacheService } from './cacheService';
@@ -20,18 +20,16 @@ export class ProductService {
    */
   getProducts(): Observable<Product[]> {
     let cacheData = this.cacheService.getListPrioductsCache();
-
     if (cacheData != null) {
-      return cacheData;
+      return of(cacheData);
     } else {
       // si no hay productos en cache o han pasado mas de 1 hora
       return this.http.get<Product[]>(this.apiUrl + '/product').pipe(
-        map((data) => {
+        tap((data) => {
           localStorage.setItem(
             'products',
             JSON.stringify({ data, timestamp: Date.now() })
           );
-          return data;
         })
       );
     }
@@ -46,16 +44,15 @@ export class ProductService {
     let cacheData = this.cacheService.getProductDetailCache(id);
 
     if (cacheData != null) {
-      return cacheData;
+      return of(cacheData);
     } else {
       // si no hay productos en cache o han pasado mas de 1 hora
       return this.http.get<ProductDetail>(this.apiUrl + '/product/' + id).pipe(
-        map((data: ProductDetail) => {
+        tap((data: ProductDetail) => {
           localStorage.setItem(
             'product_' + id,
             JSON.stringify({ data, timestamp: Date.now() })
           );
-          return data;
         })
       );
     }

@@ -1,3 +1,5 @@
+<app-search-bar (searchEvent)="updateSearchQuery($event)"></app-search-bar>
+
 <div class="product-list">
   @if (products().length > 0) { @for (product of
   filteredProducts().slice(pageIndex * pageSize, (pageIndex + 1) * pageSize);

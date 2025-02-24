@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { signal } from '@angular/core';
 import { ProductService } from '../../services/productService';
 import { currentProductName } from '../../app.component';
-import { ProductDetail } from '../../models/productDetail';
+import { CacheProductDetail, ProductDetail } from '../../models/productDetail';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDivider } from '@angular/material/divider';
@@ -35,21 +35,23 @@ export class ProductDetailComponent implements OnInit {
     const productId = this.route.snapshot.paramMap.get('id');
     if (productId) {
       this.productService.getProductById(productId).subscribe({
-        next: (data: ProductDetail) => {
-          currentProductName.set(data.brand + ' ' + data.model);
-          this.product.set(data);
+        next: (data: ProductDetail | CacheProductDetail | null) => {
+          if (data && 'brand' in data && 'model' in data) {
+            currentProductName.set(data.brand + ' ' + data.model);
+            this.product.set(data);
 
-          if (Array.isArray(data.colors) && data.colors.length > 0) {
-            if (data.colors[0] !== undefined) {
-              this.selectedColor.set(data.colors[0]);
+            if (Array.isArray(data.colors) && data.colors.length > 0) {
+              if (data.colors[0] !== undefined) {
+                this.selectedColor.set(data.colors[0]);
+              }
             }
-          }
 
-          if (data.options && data.options.storages.length > 0) {
-            this.selectedStorage.set(data.options.storages[0].code);
-          }
+            if (data.options && data.options.storages.length > 0) {
+              this.selectedStorage.set(data.options.storages[0].code);
+            }
 
-          console.log('Detalles del producto:', data);
+            console.log('Detalles del producto:', data);
+          }
         },
         error: (error) =>
           console.error('Error al obtener detalles del producto:', error),
