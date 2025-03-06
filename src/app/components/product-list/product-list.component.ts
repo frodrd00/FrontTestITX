@@ -4,7 +4,7 @@ import { ProductItemComponent } from '../product-item/product-item.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { currentProductName } from '../../app.component';
 import { Product } from '../../models/product';
-import { SearchBarComponent } from '../../search-bar/search-bar.component';
+import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 /**
  * Componente para mostrar la lista de productos
